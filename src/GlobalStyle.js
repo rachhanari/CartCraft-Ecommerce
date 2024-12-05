@@ -112,18 +112,21 @@ ${"" /* resuable code section  */}
   grid-template-columns: repeat(5, 1fr);
 }
 
-  .common-heading {
-      font-size: 3.8rem;
-      font-weight: 600;
-      margin-bottom: 6rem;
-      text-transform: capitalize;
-    }
-
-     .intro-data {
-      margin-bottom: 0;
+ .intro-data {
+      margin-buttom: 0;
       text-transform: uppercase;
       color: #5138ee;
     }
+
+  .common-heading {
+      margin-top: -80px;
+      font-size: 3.8rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      text-transform: capitalize;
+    }
+
+    
 
    .caption {
       position: absolute;
