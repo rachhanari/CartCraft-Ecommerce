@@ -7,12 +7,15 @@ import MyImage from "./components/MyImage";
 import { Container } from "./styles/Container";
 import FormatPrice from "./Helpers/FormatPrice";
 import { TbReplace, TbTruckDelivery } from "react-icons/tb";
-import { MdSecurity } from "react-icons/md"
+import { MdSecurity } from "react-icons/md";
+import Star from "./components/Star";
+import AddToCart from "./components/AddToCart";
 
 const API = "https://api.pujakaitem.com/api/products";
 
 const SingleProduct = () => {
-  const { getSingleProduct, isSingleLoading, singleProduct } = useProductContext();
+  const { getSingleProduct, isSingleLoading, singleProduct } =
+    useProductContext();
   const { id } = useParams();
 
   useEffect(() => {
@@ -33,7 +36,11 @@ const SingleProduct = () => {
   } = singleProduct;
 
   if (isSingleLoading) {
-    return <Wrapper><h1>Loading...</h1></Wrapper>; // Show a loader while fetching
+    return (
+      <Wrapper>
+        <h2>Loading...</h2>
+      </Wrapper>
+    );
   }
 
   return (
@@ -47,15 +54,17 @@ const SingleProduct = () => {
 
           <div className="product_data">
             <h2>{name}</h2>
-            <p>{stars}</p>
-            <p>{reviews}</p>
-
+            <Star stars={stars} reviews={reviews} />
             <p className="product-data-price">
-              MRP:<del><FormatPrice price={price + 250000} /></del>
+              MRP:
+              <del>
+                <FormatPrice price={price + 250000} />
+              </del>
             </p>
 
             <p className="product-data-price product-data-real-price">
-              Deal of the Day:<FormatPrice price={price} />
+              Deal of the Day:
+              <FormatPrice price={price} />
             </p>
             <p>{description}</p>
             <div className="icons">
@@ -75,9 +84,9 @@ const SingleProduct = () => {
               </div>
             </div>
             <hr />
-            
             <div className="product-data-info">
-              <p>Available:
+              <p>
+                Available:
                 <span> {stock > 0 ? "In Stock" : "Not Available"} </span>
               </p>
 
@@ -89,6 +98,8 @@ const SingleProduct = () => {
                 Brand: <span>{company}</span>
               </p>
             </div>
+            <hr />
+            {stock > 0 && <AddToCart product={singleProduct} />}
           </div>
         </div>
       </Container>
@@ -121,21 +132,29 @@ const Wrapper = styled.section`
     background-color: #f9f9f9;
   }
 
-  .icons{
-  display: flex;}
+  .icons {
+    display: flex;
+  }
+
   .product_data {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 
+    hr {
+      width: 100%;
+      border: none;
+      border-top: 1px solid #ddd;
+      margin: 1.5rem 0;
+      background-color: black; /* Optional background color for soft shadow */
+      height: 2px; /* Thickness */
+      border-radius: 4px; /* Smooth edges */
+    }
+
     h2 {
       font-size: 2.8rem;
       font-weight: bold;
       color: ${({ theme }) => theme.colors.text};
-    }
-
-    hr{
-    
     }
 
     p {
@@ -145,7 +164,6 @@ const Wrapper = styled.section`
 
     .product-data-price {
       font-size: 1.8rem;
-      
 
       del {
         color: ${({ theme }) => theme.colors.textSecondary};
@@ -163,7 +181,7 @@ const Wrapper = styled.section`
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      gap: 0.1rem; 
+      gap: 0.1rem;
       font-size: 1.6rem;
       margin: 2rem 1rem;
 
@@ -185,13 +203,6 @@ const Wrapper = styled.section`
         text-align: left;
         font-size: 1.4rem;
       }
-    }
-
-    hr {
-      width: 100%;
-      border: none;
-      border-top: 1px solid #ddd;
-      margin: 1.5rem 0;
     }
   }
 
@@ -220,7 +231,7 @@ const Wrapper = styled.section`
 
       .product-data-warranty {
         font-size: 1.4rem;
-        gap: 1rem; /* Reduced gap between icon and text */
+        gap: 1rem;
 
         .warranty-icon {
           width: 4rem;
