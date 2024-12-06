@@ -5,14 +5,17 @@ import { useProductContext } from './Productcontext';
 const FilterContext = createContext();
 
 const initialState = {
-  filter_product: [],
+  filter_products: [],
   all_products: [],
-  grid_view: false,
+  grid_view: true,
+  sorting_value: 'lowest',
+  filters: {
+    text: '', // Ensure the "text" property is initialized correctly
+  },
 };
 
 export const FilterContextProvider = ({ children }) => {
   const { products } = useProductContext();
-
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const setGridView = () => {
@@ -23,12 +26,36 @@ export const FilterContextProvider = ({ children }) => {
     dispatch({ type: 'SET_LIST_VIEW' });
   };
 
+  const sorting = () => {
+    dispatch({ type: 'GET_SORT_VALUE' });
+  };
+
+  const updateFilterValue = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    dispatch({ type: 'UPDATE_FILTERS_VALUE', payload: { name, value } });
+  };
+
+  useEffect(() => {
+    dispatch({ type: 'FILTER_PRODUCTS' });
+    dispatch({ type: 'SORTING_PRODUCTS', payload: products });
+  }, [state.sorting_value, state.filters]);
+
   useEffect(() => {
     dispatch({ type: 'LOAD_FILTER_PRODUCTS', payload: products });
   }, [products]);
 
   return (
-    <FilterContext.Provider value={{ ...state, setGridView, setListView }}>
+    <FilterContext.Provider
+      value={{
+        ...state,
+        setGridView,
+        setListView,
+        sorting,
+        updateFilterValue,
+      }}
+    >
       {children}
     </FilterContext.Provider>
   );
