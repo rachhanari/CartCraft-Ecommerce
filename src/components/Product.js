@@ -15,7 +15,7 @@ const Product = ({ curEle }) => {
 
                 <div className="card-data">
                     <h3>{name}</h3>
-                    <p className="card-data--price">₹<FormatPrice price={price} /></p>
+                    <p className="card-data--price"><FormatPrice price={price} /></p>
                 </div>
             </div>
         </NavLink>

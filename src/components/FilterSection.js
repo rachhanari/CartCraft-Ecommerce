@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useFilterContext } from '../context/Filter_Context';
+import FormatPrice from "../Helpers/FormatPrice";
+import Button from "../styles/Button"
 
 const FilterSection = () => {
-  const { filters: { text, category, company, color }, all_products, updateFilterValue } = useFilterContext();
+  const { filters: { text, category, company, color, price, maxPrice, minPrice }, all_products, updateFilterValue, clearFilter } = useFilterContext();
 
   // Function to get unique values for categories, companies, and colors
   const getUniqueData = (data, property) => {
@@ -60,6 +62,7 @@ const FilterSection = () => {
           <select
             name="company"
             id="company"
+            value={company}
             className="filter-company--select"
             onChange={updateFilterValue}
           >
@@ -72,6 +75,7 @@ const FilterSection = () => {
         </form>
       </div>
 
+      {/* Color Filter */}
       <div className="filter-colors">
         <h3>Colors</h3>
         <div className="filter-color-style">
@@ -89,6 +93,28 @@ const FilterSection = () => {
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Price Filter */}
+      <div className="filter_price">
+        <h3>Price</h3>
+        <p>
+          <FormatPrice price={price} />
+        </p>
+        <input 
+          name="price" 
+          type="range" 
+          min={minPrice} 
+          max={maxPrice} 
+          value={price} 
+          onChange={updateFilterValue} 
+        />
+      </div>
+
+      <div className='filter-clear'>
+        <Button className='btn' onClick={clearFilter}>
+          Clear Filter
+        </Button>
       </div>
     </Wrapper>
   );
@@ -126,6 +152,7 @@ const Wrapper = styled.section`
         color: black;
         cursor: pointer;
         transition: color 0.3s, text-decoration 0.3s;
+        font-size: 20px;
 
         &:hover {
           color: #007bff;
@@ -150,30 +177,6 @@ const Wrapper = styled.section`
   }
 
   .filter-colors {
-    .color-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      font-size: 1.2rem;
-
-      a {
-        text-decoration: none;
-        color: black;
-        cursor: pointer;
-        transition: color 0.3s, text-decoration 0.3s;
-
-        &:hover {
-          color: #007bff;
-          text-decoration: underline;
-        }
-      }
-
-      .active {
-        color: #6a5acd;
-        text-decoration: underline;
-      }
-    }
-
     .filter-color-style {
       display: flex;
       gap: 1rem;
@@ -192,6 +195,15 @@ const Wrapper = styled.section`
       }
     }
   }
+
+  .filter_price {
+    input[type="range"] {
+background: none;
+border: none;
+shadow:none;
+cursor: pointer;
+    }
 `;
+
 
 export default FilterSection;
