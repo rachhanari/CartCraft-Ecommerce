@@ -10,7 +10,10 @@ const initialState = {
   grid_view: true,
   sorting_value: 'lowest',
   filters: {
-    text: '', // Ensure the "text" property is initialized correctly
+    text: '',
+    category: "all",
+    company: "all",
+    color: "all"
   },
 };
 
@@ -26,8 +29,9 @@ export const FilterContextProvider = ({ children }) => {
     dispatch({ type: 'SET_LIST_VIEW' });
   };
 
-  const sorting = () => {
-    dispatch({ type: 'GET_SORT_VALUE' });
+  const sorting = (event) => {
+    const value = event.target.value;
+    dispatch({ type: 'GET_SORT_VALUE', payload: value });
   };
 
   const updateFilterValue = (event) => {
@@ -39,7 +43,7 @@ export const FilterContextProvider = ({ children }) => {
 
   useEffect(() => {
     dispatch({ type: 'FILTER_PRODUCTS' });
-    dispatch({ type: 'SORTING_PRODUCTS', payload: products });
+    dispatch({ type: 'SORTING_PRODUCTS' });
   }, [state.sorting_value, state.filters]);
 
   useEffect(() => {
