@@ -1,46 +1,41 @@
+import React from "react";
 import styled from "styled-components";
 import FormatPrice from "../Helpers/FormatPrice";
 import { NavLink } from "react-router-dom";
-import {Button} from "../styles/Button"
+import { Button } from "../styles/Button";
 
-const ListView = ({ products=[]}) => {
+const ListView = ({ products = [] }) => {
+  return (
+    <Wrapper className="section">
+      <div className="container grid">
+        {products.map((curEle) => {
+          const { id, name, image, price, description } = curEle;
+          return (
+            <div className="card grid grid-two-column" key={id}>
+              <figure>
+                <img src={image} alt={name} />
+              </figure>
 
+              <div className="card-data">
+                <h3>{name}</h3>
+                <p>
+                  <FormatPrice price={price} />
+                </p>
 
-    return (
-        <Wrapper className="section">
-            <div className="container grid">
-                {
-                    products.map((curEle) => {
-                        const { id, name, image, price, description } = curEle;
-                        return (
-                            <div className="card grid grid-two-column">
-                                <figure>
-                                    <img src={image} alt={name} />
-                                </figure>
+                <p>{description.slice(0, 80)}....</p>
 
-                                <div className="card-data">
-                                    <h3>{name}</h3>
-                                    <p><FormatPrice price={price} /></p>
-
-                                    <p>{description.slice(0, 80)}....</p>
-
-                                    <NavLink to={`/singleproduct/${id}`}>
-                                        <Button className="btn">
-                                            Read More
-                                        </Button>
-                                    </NavLink>
-                                </div>
-                            </div>
-
-                        )
-                    })
-                }
+                {/* Correcting the structure of the NavLink */}
+                <NavLink to={`/singleproduct/${id}`} style={{ textDecoration: 'none' }}>
+                  <Button className="btn">Read More</Button>
+                </NavLink>
+              </div>
             </div>
-
-        </Wrapper>
-    );
+          );
+        })}
+      </div>
+    </Wrapper>
+  );
 };
-
 
 const Wrapper = styled.section`
   padding: 9rem 0;
@@ -48,104 +43,62 @@ const Wrapper = styled.section`
 
   .container {
     max-width: 120rem;
-    display: grid;
-    gap: 3rem;
-  }
-
-  figure {
-    width: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease-in-out;
-
-    &::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 0;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.4);
-      transition: all 0.3s ease-in-out;
-      cursor: pointer;
-    }
-
-    &:hover::after {
-      width: 100%;
-    }
-
-    &:hover img {
-      transform: scale(1.1);
-    }
-
-    img {
-      max-width: 100%;
-      margin-top: 1.5rem;
-      height: 22rem;
-      border-radius: 1rem;
-      transition: all 0.3s ease-in-out;
-    }
   }
 
   .card {
-    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: ${({ theme }) => theme.colors.bg};
     border-radius: 1rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out;
-
-    &:hover {
-      transform: translateY(-0.5rem);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    }
+    padding: 2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
     .card-data {
-      padding: 2rem;
+      flex-grow: 1;
+      padding: 1rem;
 
       h3 {
-        font-size: 1.8rem;
         color: ${({ theme }) => theme.colors.text};
-        margin-bottom: 1rem;
         text-transform: capitalize;
       }
 
       p {
-        font-size: 1.4rem;
-        color: ${({ theme }) => theme.colors.textLight};
-        margin-bottom: 1.5rem;
-      }
-
-      .card-data--price {
-        font-size: 1.6rem;
         color: ${({ theme }) => theme.colors.helper};
-        margin-bottom: 1rem;
-        font-weight: bold;
+        margin: 0.5rem 0;
+      }
+    }
+
+    figure {
+      width: 150px;
+      height: 150px;
+      margin: 0;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0.5rem;
       }
     }
 
     .btn {
-      margin-top: 2rem;
-      padding: 1rem 2.5rem;
-      font-size: 1.6rem;
-      font-weight: bold;
-      color: ${({ theme }) => theme.colors.white};
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 1.5rem;
       background-color: ${({ theme }) => theme.colors.primary};
+      color: #fff;
       border: none;
       border-radius: 0.5rem;
-      text-transform: uppercase;
       cursor: pointer;
-      display: inline-block;
-      text-align: center;
-      transition: all 0.3s ease-in-out;
 
       &:hover {
-        background-color: ${({ theme }) => theme.colors.secondary};
+        background-color: ${({ theme }) => theme.colors.primaryHover};
       }
     }
   }
 `;
-
 
 export default ListView;

@@ -5,20 +5,25 @@ import FormatPrice from "../Helpers/FormatPrice";
 import Button from "../styles/Button"
 
 const FilterSection = () => {
-  const { filters: { text, category, company, color, price, maxPrice, minPrice }, all_products, updateFilterValue, clearFilter } = useFilterContext();
+  const { 
+    filters: { text, category, company, color, price, maxPrice, minPrice }, 
+    all_products, 
+    updateFilterValue, 
+    clearFilter 
+  } = useFilterContext();
 
   // Function to get unique values for categories, companies, and colors
   const getUniqueData = (data, property) => {
     let newVal = data.map((curEle) => curEle[property]);
     if (property === "colors") {
-      newVal = newVal.flat();
+      newVal = newVal.flat(); // Flatten array for colors
     }
     return ["all", ...new Set(newVal)];
   };
 
   const categoryData = getUniqueData(all_products, "category");
   const companyData = getUniqueData(all_products, "company");
-  const colorsData = getUniqueData(all_products, "colors");
+  const colorsData = getUniqueData(all_products, "colors"); // Assuming "colors" is the correct property
 
   return (
     <Wrapper>
@@ -86,8 +91,8 @@ const FilterSection = () => {
               value={curColor}
               style={{ backgroundColor: curColor }}
               name="color"
-              className="btnStyle"
-              onClick={updateFilterValue}
+              className={`btnStyle ${color === curColor ? "active" : ""}`}
+              onClick={(e) => updateFilterValue(e)}
             >
               {color === curColor ? "✓" : ""}
             </button>
@@ -101,24 +106,25 @@ const FilterSection = () => {
         <p>
           <FormatPrice price={price} />
         </p>
-        <input 
-          name="price" 
-          type="range" 
-          min={minPrice} 
-          max={maxPrice} 
-          value={price} 
-          onChange={updateFilterValue} 
+        <input
+          name="price"
+          type="range"
+          min={minPrice}
+          max={maxPrice}
+          value={price}
+          onChange={updateFilterValue}
         />
       </div>
 
-      <div className='filter-clear'>
-        <Button className='btn' onClick={clearFilter}>
+      <div className="filter-clear">
+        <Button className="btn" onClick={clearFilter}>
           Clear Filter
         </Button>
       </div>
     </Wrapper>
   );
 };
+
 
 const Wrapper = styled.section`
   padding: 5rem 0;

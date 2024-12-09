@@ -1,12 +1,15 @@
 const filterReducer = (state, action) => {
   switch (action.type) {
-    case 'LOAD_FILTER_PRODUCTS':
-      let priceArr = action.payload
-        .map((product) => product.price)
-        .filter((price) => typeof price === 'number' && !isNaN(price));
+    // Load Products and Initialize Filters
+    case "LOAD_FILTER_PRODUCTS":
+      if (!Array.isArray(action.payload)) {
+        console.error("Invalid products payload:", action.payload);
+        return state;
+      }
 
-      let maxPrice = priceArr.length > 0 ? Math.max(...priceArr) : 0;
-      let minPrice = priceArr.length > 0 ? Math.min(...priceArr) : 0;
+      const prices = action.payload.map((product) => product.price || 0);
+      const maxPrice = Math.max(...prices);
+      const minPrice = Math.min(...prices);
 
       return {
         ...state,
@@ -20,87 +23,112 @@ const filterReducer = (state, action) => {
         },
       };
 
-    case 'SET_GRID_VIEW':
-      return { ...state, grid_view: true };
+    // Update Filters
+    case "UPDATE_FILTERS_VALUE":
+      return {
+        ...state,
+        filters: {
+          ...state.filters,
+          [action.payload.name]: action.payload.value || "",
+        },
+      };
 
-    case 'SET_LIST_VIEW':
-      return { ...state, grid_view: false };
+    // Clear Filters
+    case "CLEAR_FILTERS":
+      return {
+        ...state,
+        filters: {
+          ...state.filters,
+          text: "",
+          category: "all",
+          company: "all",
+          color: "all",
+          price: state.filters.maxPrice,
+        },
+      };
 
-    case 'GET_SORT_VALUE':
-      return { ...state, sorting_value: action.payload };
+    // Apply Filters
+    case "FILTER_PRODUCTS":
+      let { all_products, filters } = state;
+      let tempProducts = [...all_products];
 
-    case 'SORTING_PRODUCTS':
-      const { sorting_value, filter_products } = state;
-      let sortedProducts = [...filter_products];
-
-      if (sorting_value === 'lowest') {
-        sortedProducts.sort((a, b) => a.price - b.price);
-      } else if (sorting_value === 'highest') {
-        sortedProducts.sort((a, b) => b.price - a.price);
-      } else if (sorting_value === 'a-z') {
-        sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
-      } else if (sorting_value === 'z-a') {
-        sortedProducts.sort((a, b) => b.name.localeCompare(a.name));
-      }
-
-      return { ...state, filter_products: sortedProducts };
-
-    case 'FILTER_PRODUCTS':
-      const { all_products, filters } = state;
-      let filteredProducts = [...all_products];
-
+      // Filter by Search Text
       if (filters.text) {
-        filteredProducts = filteredProducts.filter((product) =>
-          product.name.toLowerCase().includes(filters.text.toLowerCase())
+        tempProducts = tempProducts.filter((product) =>
+          product.name?.toLowerCase().includes(filters.text.toLowerCase())
         );
       }
 
-      if (filters.category !== 'all') {
-        filteredProducts = filteredProducts.filter(
+      // Filter by Category
+      if (filters.category !== "all") {
+        tempProducts = tempProducts.filter(
           (product) => product.category === filters.category
         );
       }
 
-      if (filters.company !== 'all') {
-        filteredProducts = filteredProducts.filter(
+      // Filter by Company
+      if (filters.company !== "all") {
+        tempProducts = tempProducts.filter(
           (product) => product.company === filters.company
         );
       }
 
-      if (filters.color !== 'all') {
-        filteredProducts = filteredProducts.filter((product) =>
-          product.colors.includes(filters.color)
+      // Filter by Color
+      if (filters.color && filters.color !== "all") {
+        tempProducts = tempProducts.filter((product) =>
+          product.colors?.includes(filters.color)
         );
       }
 
-      filteredProducts = filteredProducts.filter(
-        (product) => product.price >= filters.minPrice && product.price <= filters.price
+      // Filter by Price
+      tempProducts = tempProducts.filter(
+        (product) => product.price <= filters.price
       );
 
-      return { ...state, filter_products: filteredProducts };
+      return { ...state, filter_products: tempProducts };
 
-    case 'UPDATE_FILTERS_VALUE':
-      const { name, value } = action.payload;
+    // Set Sorting Preference
+    case "SET_SORTING":
       return {
         ...state,
-        filters: { ...state.filters, [name]: value },
+        sorting_value: action.payload,
       };
 
-    case 'CLEAR_FILTERS':
-      return {
-        ...state,
-        filters: {
-          text: '',
-          category: 'all',
-          company: 'all',
-          color: 'all',
-          maxPrice: state.filters.maxPrice,
-          price: state.filters.maxPrice,
-          minPrice: state.filters.minPrice,
-        },
-      };
+    // Apply Sorting
+    case "SORTING_PRODUCTS":
+      let sortedProducts = [...state.filter_products];
+      const { sorting_value } = state;
 
+      switch (sorting_value) {
+        case "lowest":
+          sortedProducts.sort((a, b) => (a.price || 0) - (b.price || 0));
+          break;
+        case "highest":
+          sortedProducts.sort((a, b) => (b.price || 0) - (a.price || 0));
+          break;
+        case "a-z":
+          sortedProducts.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+          break;
+        case "z-a":
+          sortedProducts.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
+          break;
+        default:
+          break;
+      }
+
+      return { ...state, filter_products: sortedProducts };
+
+    // Set Grid View
+    case "SET_GRID_VIEW":
+      return { ...state, grid_view: true };
+
+    // Set List View
+    case "SET_LIST_VIEW":
+      return { ...state, grid_view: false };
+
+    // Default
     default:
+      console.error("Unhandled action type:", action.type);
       return state;
   }
 };

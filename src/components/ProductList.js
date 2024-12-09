@@ -1,23 +1,25 @@
-import React from 'react'
-import { useFilterContext } from '../context/Filter_Context';
-import GridView from './GridView';
-import ListView from './ListView';
+import React from "react";
+import { useFilterContext } from "../context/Filter_Context";
+import GridView from "./GridView";
+import ListView from "./ListView";
+import { useSearchParams } from "react-router-dom";
+
 const ProductList = () => {
+  const [searchParams] = useSearchParams();
   const { filter_products, grid_view } = useFilterContext();
 
-  if (grid_view=== true) {
-    return (
-      <GridView products={filter_products} />
-    )
-  }
+  // Log current URL params for debugging
+  console.log("Search Params:", {
+    category: searchParams.get("category"),
+    color: searchParams.get("color"),
+    text: searchParams.get("text"),
+  });
 
-  if (grid_view === false) {
-    return (
-      <ListView products={filter_products} />
-    )
-  }
-}
+  return grid_view ? (
+    <GridView products={filter_products} />
+  ) : (
+    <ListView products={filter_products} />
+  );
+};
 
-
-
-export default ProductList
+export default ProductList;

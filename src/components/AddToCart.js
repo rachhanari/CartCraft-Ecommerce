@@ -3,22 +3,22 @@ import styled from 'styled-components';
 import { FaCheck } from 'react-icons/fa';
 import CartAmountToggle from './CartAmountToggle';
 import { NavLink } from 'react-router-dom';
-import Button from "../styles/Button"
+import Button from "../styles/Button";
+import { useCartContext } from '../context/cart_context';
 
 const AddToCart = ({ product }) => {
+  const { addToCart } = useCartContext(); // Corrected method name
   const { id, colors, stock } = product;
   const [color, setColor] = useState(colors[0]);
+  const [amount, setAmount] = useState(1);
 
-  const [amount, setAmount]= useState(1);
-
-  const setDecrease =()=>{
-    amount > 1 ? setAmount(amount - 1): setAmount(1); 
+  const setDecrease = () => {
+    setAmount((prevAmount) => Math.max(prevAmount - 1, 1));
   };
-  
 
-  const setIncrease =()=>{
-    amount <  stock ? setAmount(amount + 1): setAmount(stock);
-  }
+  const setIncrease = () => {
+    setAmount((prevAmount) => Math.min(prevAmount + 1, stock));
+  };
 
   return (
     <Wrapper>
@@ -38,14 +38,17 @@ const AddToCart = ({ product }) => {
         </p>
       </div>
 
-
-      <CartAmountToggle amount={amount}
-      setDecrease={setDecrease}
-      setIncrease={setIncrease}
+      <CartAmountToggle
+        amount={amount}
+        setDecrease={setDecrease}
+        setIncrease={setIncrease}
       />
 
-      <NavLink to="/cart">
-<Button className="btn">Add to Cart</Button>
+      <NavLink
+        to="/cart"
+        onClick={() => addToCart(id, color, amount, product)} // Corrected method usage
+      >
+        <Button className="btn">Add to Cart</Button>
       </NavLink>
     </Wrapper>
   );
@@ -136,12 +139,12 @@ const Wrapper = styled.section`
 
   .btn {
     display: inline-block;
-    margin-top: 1.5rem;  /* Increased margin to separate from other elements */
-    padding: 1.2rem 2.5rem;  /* Increased padding for a bigger button */
+    margin-top: 1.5rem;
+    padding: 1.2rem 2.5rem;
     background-color: ${({ theme }) => theme.colors.primary || "#6200ea"};
     color: #fff;
-    font-size: 1.2rem;  /* Increased font size */
-    font-weight: 700;   /* Bold text */
+    font-size: 1.2rem;
+    font-weight: 700;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -153,6 +156,5 @@ const Wrapper = styled.section`
     }
   }
 `;
-
 
 export default AddToCart;
