@@ -24,7 +24,7 @@ const Footer = () => {
       <footer>
         <div className="grid grid-four-column">
           <div className="footer-about">
-            <h3>Rachha Stroe's</h3>
+            <h3>TrendCart Store</h3>
             <p>Are you looking for shopping-related content? I can help with tips, promotional ideas, or product descriptions tailored to your needs. Let me know the specifics!</p>
           </div>
 
@@ -69,7 +69,7 @@ const Footer = () => {
         <div className="footer-bottom--section">
         <hr />
           <div className="container grid grid-two-column">
-            <p>© {new Date().getFullYear()} Rachha Store | All Rights Reserved</p>
+            <p>© {new Date().getFullYear()} TrendCart Store | All Rights Reserved</p>
             <div>
               <p>PRIVACY POLICY</p>
               <p>TERMS & CONDITIONS</p>

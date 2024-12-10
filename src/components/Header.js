@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <MainHeader>
         <NavLink to="/">
-           <img src='./images/logo.png' alt='My logo'/>
+           <img src='./images/logo.png' alt='my logo' />
         </NavLink>
         <Navbar/>
     </MainHeader>
@@ -24,7 +24,7 @@ position: relative;
 img{
 
 object-fit: contain;
-width: 150px;
+width: 200px;
 padding: 15px
 }
 `;

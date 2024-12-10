@@ -8,7 +8,7 @@ import FeaturesProducts from './components/FeaturesProducts';
 const Home = () => {
 
   const data = {
-    name: "Rachha's Store"
+    name: "TrendCart Store"
   }
   return (
     <>
