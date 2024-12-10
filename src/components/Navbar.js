@@ -9,6 +9,7 @@ import Button from '../styles/Button';
 
 
 
+
 const NavbarContainer = styled.nav`
   display: flex;
   justify-content: space-between;
@@ -85,7 +86,7 @@ const NavbarContainer = styled.nav`
 
 const Navbar = () => {
 
-  const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
+  const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
   const { total_item } = useCartContext();
 
   return (
@@ -112,15 +113,22 @@ const Navbar = () => {
           </NavLink>
         </li>
 
-        {isAuthenticated ?
+
+        {
+          isAuthenticated && <p>{user.name}</p>
+        }
+
+        {isAuthenticated ? (
           <li>
             <Button onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
               Log Out
             </Button>
-          </li> : <li>
+          </li>
+        ) : (
+          <li>
             <Button onClick={() => loginWithRedirect()}>Log In</Button>;
           </li>
-        }
+        )}
         <li>
           <NavLink to="/cart" className="nav-link cart-icon--link">
             <FiShoppingCart className="cart-icon" />

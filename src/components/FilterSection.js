@@ -12,18 +12,18 @@ const FilterSection = () => {
     clearFilter 
   } = useFilterContext();
 
-  // Function to get unique values for categories, companies, and colors
+
   const getUniqueData = (data, property) => {
     let newVal = data.map((curEle) => curEle[property]);
     if (property === "colors") {
-      newVal = newVal.flat(); // Flatten array for colors
+      newVal = newVal.flat(); 
     }
     return ["all", ...new Set(newVal)];
   };
 
   const categoryData = getUniqueData(all_products, "category");
   const companyData = getUniqueData(all_products, "company");
-  const colorsData = getUniqueData(all_products, "colors"); // Assuming "colors" is the correct property
+  const colorsData = getUniqueData(all_products, "colors");
 
   return (
     <Wrapper>
