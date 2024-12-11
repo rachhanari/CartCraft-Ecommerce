@@ -47,7 +47,6 @@ const FilterSection = () => {
           {categoryData.map((curCategory, index) => (
             <a
               key={index}
-              href="#"
               name="category"
               onClick={(e) => {
                 e.preventDefault();

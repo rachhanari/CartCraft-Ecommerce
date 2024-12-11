@@ -1,9 +1,7 @@
-import React from 'react';
 import styled from 'styled-components';
 import HeroSection from './components/HeroSection';
 import Services from "./components/Services"
 import Truested from "./components/Truested"
-import Footer from './components/Footer';
 import FeaturesProducts from './components/FeaturesProducts';
 const Home = () => {
 

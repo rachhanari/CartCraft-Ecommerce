@@ -9,7 +9,7 @@ const initialState = {
   filter_products: [],
   all_products: [],
   grid_view: true,
-  sorting_value: "lowest", // default sorting
+  sorting_value: "lowest",
   filters: {
     text: "",
     category: "all",
@@ -26,23 +26,17 @@ export const FilterContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Initialize filters from URL params
   useEffect(() => {
     const params = Object.fromEntries(searchParams.entries());
-    console.log("URL Params Loaded:", params); // Debugging log
     dispatch({ type: "SET_FILTERS_FROM_PARAMS", payload: params });
   }, [searchParams]);
 
-  // Load products on mount
   useEffect(() => {
     if (products && Array.isArray(products)) {
       dispatch({ type: "LOAD_FILTER_PRODUCTS", payload: products });
-    } else {
-      console.error("Products not loaded or invalid:", products);
     }
   }, [products]);
 
-  // Apply filters and sorting
   useEffect(() => {
     dispatch({ type: "FILTER_PRODUCTS" });
     dispatch({ type: "SORTING_PRODUCTS" });

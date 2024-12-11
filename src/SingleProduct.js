@@ -20,7 +20,7 @@ const SingleProduct = () => {
 
   useEffect(() => {
     getSingleProduct(`${API}?id=${id}`);
-  }, [id]);
+  }, []);
 
   const {
     id: storeId,
@@ -34,7 +34,6 @@ const SingleProduct = () => {
     reviews,
     image,
   } = singleProduct;
-
   if (isSingleLoading) {
     return (
       <Wrapper>
@@ -46,7 +45,7 @@ const SingleProduct = () => {
   return (
     <Wrapper>
       <PageNavigation title={name} />
-      <Container clasname="container">
+      <Container className="container">
         <div className="grid grid-two-column">
           <div className="product-images">
             <MyImage imgs={image} />
@@ -71,7 +70,7 @@ const SingleProduct = () => {
               <div className="product-data-warranty">
                 <TbTruckDelivery className="warranty-icon" />
                 <p>Free Delivery</p>
-              </div>
+                </div>
 
               <div className="product-data-warranty">
                 <TbReplace className="warranty-icon" />
@@ -80,7 +79,7 @@ const SingleProduct = () => {
 
               <div className="product-data-warranty">
                 <MdSecurity className="warranty-icon" />
-                <p>2 Year warranty</p>
+                <p>2 Year Warranty</p>
               </div>
             </div>
             <hr />
@@ -91,7 +90,7 @@ const SingleProduct = () => {
               </p>
 
               <p>
-                ID: <span>{id}</span>
+                ID: <span>{storeId}</span>
               </p>
 
               <p>

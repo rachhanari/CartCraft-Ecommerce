@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '../styles/Button';
-import { FaDiscord, FaGithub, FaInstagram, FaYoutube } from 'react-icons/fa';
+import { FaDiscord, FaGithub, FaInstagram } from 'react-icons/fa';
 
 const Footer = () => {
   return (
