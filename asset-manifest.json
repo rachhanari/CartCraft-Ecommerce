@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/CartCraft-Ecommerce/static/css/main.e6c13ad2.css",
+    "main.js": "/CartCraft-Ecommerce/static/js/main.91b036b7.js",
+    "static/js/787.5c65c091.chunk.js": "/CartCraft-Ecommerce/static/js/787.5c65c091.chunk.js",
+    "index.html": "/CartCraft-Ecommerce/index.html",
+    "main.e6c13ad2.css.map": "/CartCraft-Ecommerce/static/css/main.e6c13ad2.css.map",
+    "main.91b036b7.js.map": "/CartCraft-Ecommerce/static/js/main.91b036b7.js.map",
+    "787.5c65c091.chunk.js.map": "/CartCraft-Ecommerce/static/js/787.5c65c091.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.91b036b7.js"
+  ]
+}
